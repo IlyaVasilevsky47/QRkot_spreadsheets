@@ -18,7 +18,7 @@ GOOGLE_URL = 'https://docs.google.com/spreadsheets/d/'
     '/',
     dependencies=[Depends(current_superuser)],
 )
-async def get_spreadsheet_report(
+async def get_report(
         wrapper_services: Aiogoogle = Depends(get_service),
         session: AsyncSession = Depends(get_async_session)
 ):
