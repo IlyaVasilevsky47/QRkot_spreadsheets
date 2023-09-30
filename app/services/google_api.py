@@ -1,3 +1,4 @@
+import copy
 from datetime import datetime
 
 from aiogoogle import Aiogoogle
@@ -23,28 +24,26 @@ SPREADSHEETS_BODY = dict(
         ),
     ))],
 )
-TABLE_VALUES = [
+GOOGLE_URL = 'https://docs.google.com/spreadsheets/d/{spreadsheet_id}'
+INITIAL_VALUE_THE_TABLE = [
     ['Отчет от', ],
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание'],
 ]
-ERROR_ROWS_COLUMNS_VALUE = (
-    'Получилось строк - {rows_value},'
-    'а столбцов - {columns_value}, но'
-    'количество строк не должно превышать {rowcount}, '
-    'a столбцов - {columncount}'
-)
+ERROR_ROWS_VALUE = 'Получилось избыточно строк - {rows_value}'
+ERROR_COLUMNS_VALUE = 'Получилось избыточно столбцов - {columns_value}'
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
-    spreadsheets_body = SPREADSHEETS_BODY.copy()
+    spreadsheets_body = copy.deepcopy(SPREADSHEETS_BODY)
     spreadsheets_body['properties']['title'] += now_date_time
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheets_body)
     )
-    return response['spreadsheetId']
+    spreadsheet_id = response['spreadsheetId']
+    return [spreadsheet_id, GOOGLE_URL.format(spreadsheet_id=spreadsheet_id)]
 
 
 async def set_user_permissions(
@@ -73,7 +72,7 @@ async def spreadsheets_update_value(
 ) -> str:
     now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
-    table_values = TABLE_VALUES.copy()
+    table_values = copy.deepcopy(INITIAL_VALUE_THE_TABLE)
     table_values[0].append(now_date_time)
     table_values.extend([
         list(
@@ -90,18 +89,14 @@ async def spreadsheets_update_value(
     rows_value = len(table_values)
     columns_value = max(map(len, table_values))
 
-    if (
-        SPREADSHEET_ROWCOUNT < rows_value or
-        SPREADSHEET_COLUMNCOUNT < columns_value
-    ):
-        raise ValueError(
-            ERROR_ROWS_COLUMNS_VALUE.format(
-                rows_value=rows_value,
-                columns_value=columns_value,
-                rowcount=SPREADSHEET_ROWCOUNT,
-                columncount=SPREADSHEET_COLUMNCOUNT
-            )
-        )
+    if SPREADSHEET_ROWCOUNT < rows_value:
+        raise ValueError(ERROR_ROWS_VALUE.format(
+            rows_value=rows_value
+        ))
+    if SPREADSHEET_COLUMNCOUNT < columns_value:
+        raise ValueError(ERROR_COLUMNS_VALUE.format(
+            columns_value=columns_value
+        ))
 
     await wrapper_services.as_service_account(
         service.spreadsheets.values.update(
