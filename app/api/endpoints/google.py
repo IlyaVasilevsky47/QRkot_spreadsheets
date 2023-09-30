@@ -11,7 +11,8 @@ from app.services.google_api import (set_user_permissions, spreadsheets_create,
 
 router = APIRouter()
 
-GOOGLE_URL = 'https://docs.google.com/spreadsheets/d/'
+
+GOOGLE_URL = 'https://docs.google.com/spreadsheets/d/{spreadsheet_id}'
 
 
 @router.post(
@@ -28,5 +29,10 @@ async def get_report(
     )
     spreadsheet_id = await spreadsheets_create(wrapper_services)
     await set_user_permissions(spreadsheet_id, wrapper_services)
-    await spreadsheets_update_value(spreadsheet_id, projects, wrapper_services)
-    return GOOGLE_URL + spreadsheet_id
+    try:
+        await spreadsheets_update_value(
+            spreadsheet_id, projects, wrapper_services
+        )
+    except Exception as erorr:
+        raise erorr
+    return GOOGLE_URL.format(spreadsheet_id=spreadsheet_id)

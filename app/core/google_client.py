@@ -5,7 +5,7 @@ from app.core.config import settings
 
 SCOPES = [
     'https://www.googleapis.com/auth/spreadsheets',
-    'https://www.googleapis.com/auth/drive'
+    'https://www.googleapis.com/auth/drive',
 ]
 INFO = {
     'type': settings.type,
