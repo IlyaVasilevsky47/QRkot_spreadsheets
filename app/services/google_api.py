@@ -24,14 +24,19 @@ SPREADSHEETS_BODY = dict(
         ),
     ))],
 )
-GOOGLE_URL = 'https://docs.google.com/spreadsheets/d/{spreadsheet_id}'
-INITIAL_VALUE_THE_TABLE = [
+TABLE_HEADER = [
     ['Отчет от', ],
     ['Топ проектов по скорости закрытия'],
     ['Название проекта', 'Время сбора', 'Описание'],
 ]
-ERROR_ROWS_VALUE = 'Получилось избыточно строк - {rows_value}'
-ERROR_COLUMNS_VALUE = 'Получилось избыточно столбцов - {columns_value}'
+ERROR_ROWS_TOO_BIG = (
+    'При создании получаеться {value} строк, больше чем доступно - ' +
+    f'{SPREADSHEET_ROWCOUNT}'
+)
+ERROR_COLUMNS_TOO_BIG = (
+    'При создании получаеться {value} столбцов, больше чем доступно - ' +
+    f'{SPREADSHEET_COLUMNCOUNT}'
+)
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
@@ -42,8 +47,7 @@ async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=spreadsheets_body)
     )
-    spreadsheet_id = response['spreadsheetId']
-    return [spreadsheet_id, GOOGLE_URL.format(spreadsheet_id=spreadsheet_id)]
+    return response['spreadsheetId'], response['spreadsheetUrl']
 
 
 async def set_user_permissions(
@@ -72,7 +76,7 @@ async def spreadsheets_update_value(
 ) -> str:
     now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
-    table_values = copy.deepcopy(INITIAL_VALUE_THE_TABLE)
+    table_values = copy.deepcopy(TABLE_HEADER)
     table_values[0].append(now_date_time)
     table_values.extend([
         list(
@@ -90,12 +94,12 @@ async def spreadsheets_update_value(
     columns_value = max(map(len, table_values))
 
     if SPREADSHEET_ROWCOUNT < rows_value:
-        raise ValueError(ERROR_ROWS_VALUE.format(
-            rows_value=rows_value
+        raise ValueError(ERROR_ROWS_TOO_BIG.format(
+            value=rows_value
         ))
     if SPREADSHEET_COLUMNCOUNT < columns_value:
-        raise ValueError(ERROR_COLUMNS_VALUE.format(
-            columns_value=columns_value
+        raise ValueError(ERROR_COLUMNS_TOO_BIG.format(
+            value=columns_value
         ))
 
     await wrapper_services.as_service_account(
