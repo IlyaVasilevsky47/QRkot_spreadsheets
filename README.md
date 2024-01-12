@@ -19,31 +19,31 @@
 ```bash
     git clone git@github.com:IlyaVasilevsky47/cat_charity_fund.git
 ```
-
 2. Создаем и активируем виртуальное окружение.
 ```bash
     python -m venv venv
     source venv/scripts/activate
 ```
-
 3. Обновляем менеджер пакетов pip и устанавливаем зависимости из файла requirements.txt.
 ```bash
     python -m pip install --upgrade pip
     pip install -r requirements.txt
 ```
-
-APP_TITLE=QRKot
+4. Создаем файл .env и заполняем его.
+```conf
 DATABASE_URL=sqlite+aiosqlite:///./cat-foundation.db
-
-4. Создаем базу данных. 
+```
+5. Создаем базу данных. 
 ```bash
     alembic upgrade head
 ```
-
-5. Запускаем проект.
+6. Запускаем проект.
 ```bash
-    uvicorn app.main:app --reload
+    uvicorn app.main:app
 ```
+
+## Документация:
+- [ReDoc](https://redocly.github.io/redoc/?url=https://code.s3.yandex.net/Python-dev/openapi.json)
 
 ## Автор:
 - Василевский И.А.
