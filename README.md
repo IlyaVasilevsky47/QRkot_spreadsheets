@@ -42,6 +42,29 @@ DATABASE_URL=sqlite+aiosqlite:///./cat-foundation.db
     uvicorn app.main:app
 ```
 
+## Пример запроса:
+### Аутентификация (POST): https://cors.redoc.ly/auth/register
+#### Входные данные:
+```json
+{
+  "email": "user@example.com",
+  "password": "string",
+  "is_active": true,
+  "is_superuser": false,
+  "is_verified": false
+}
+```
+#### Полученные данные:
+```json
+{
+  "id": null,
+  "email": "user@example.com",
+  "is_active": true,
+  "is_superuser": false,
+  "is_verified": false
+}
+```
+
 ## Документация:
 - [ReDoc](https://redocly.github.io/redoc/?url=https://code.s3.yandex.net/Python-dev/openapi.json)
 
