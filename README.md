@@ -1,6 +1,6 @@
 # QRKot
 
-[![CI](https://github.com/IlyaVasilevsky47/service_home_bookkeeping/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/IlyaVasilevsky47/service_home_bookkeeping/actions/workflows/main.yml)
+[![CI](https://github.com/IlyaVasilevsky47/QRkot_spreadsheets/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/IlyaVasilevsky47/QRkot_spreadsheets/actions/workflows/main.yml)
 
 Приложение QRKot — это API для Благотворительного фонда поддержки котиков.
 
