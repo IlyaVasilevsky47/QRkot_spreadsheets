@@ -17,7 +17,7 @@ QRKot — это API для Благотворительного фонда по
 ## Запуск проекта:
 1. Клонируем проект.
 ```bash
-git clone git@github.com:IlyaVasilevsky47/cat_charity_fund.git
+git clone git@github.com:IlyaVasilevsky47/QRkot_spreadsheets.git
 ```
 2. Создаем и активируем виртуальное окружение.
 ```bash
