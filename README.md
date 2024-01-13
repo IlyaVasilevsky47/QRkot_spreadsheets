@@ -17,17 +17,17 @@ QRKot — это API для Благотворительного фонда по
 ## Запуск проекта:
 1. Клонируем проект.
 ```bash
-    git clone git@github.com:IlyaVasilevsky47/cat_charity_fund.git
+git clone git@github.com:IlyaVasilevsky47/cat_charity_fund.git
 ```
 2. Создаем и активируем виртуальное окружение.
 ```bash
-    python -m venv venv
-    source venv/scripts/activate
+python -m venv venv
+source venv/scripts/activate
 ```
 3. Обновляем менеджер пакетов pip и устанавливаем зависимости из файла requirements.txt.
 ```bash
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
+python -m pip install --upgrade pip
+pip install -r requirements.txt
 ```
 4. Создаем файл .env и заполняем его.
 ```conf
@@ -35,11 +35,11 @@ DATABASE_URL=sqlite+aiosqlite:///./cat-foundation.db
 ```
 5. Создаем базу данных. 
 ```bash
-    alembic upgrade head
+alembic upgrade head
 ```
 6. Запускаем проект.
 ```bash
-    uvicorn app.main:app
+uvicorn app.main:app
 ```
 
 ## Пример запроса:
