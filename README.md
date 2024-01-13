@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/IlyaVasilevsky47/QRkot_spreadsheets/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/IlyaVasilevsky47/QRkot_spreadsheets/actions/workflows/main.yml)
 
-Приложение QRKot — это API для Благотворительного фонда поддержки котиков.
+QRKot — это API для Благотворительного фонда поддержки котиков.
 
 Фонд собирает пожертвования на различные проекты, включая медицинское обслуживание, обустройство колоний в подвалах, корм для кошек, оставшихся без опеки, и любые другие цели, связанные с поддержанием популяции кошек.
 
